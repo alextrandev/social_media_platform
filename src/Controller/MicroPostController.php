@@ -50,7 +50,10 @@ class MicroPostController extends AbstractController
             $em->flush();
 
             // Add a toast popup
-            // Redirect to the post view page
+            $this->addFlash('success', 'Your post have been submitted');
+
+            // Redirect to the list of posts
+            return $this->redirectToRoute('app_micro_post');
         }
 
         return $this->render(
