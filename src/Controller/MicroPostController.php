@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\MicroPost;
+use App\Form\MicroPostType;
 use App\Repository\MicroPostRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,21 +32,18 @@ class MicroPostController extends AbstractController
     }
 
     #[Route('micro-post/add', name: 'app_micro_post_add', priority: 2)]
-    public function add(Request $req, EntityManagerInterface $em): Response
-    {
-        $post = new MicroPost();
-        $form = $this->createFormBuilder($post)
-            ->add('title')
-            ->add('text')
-            // ->add('submit', SubmitType::class, ['label' => 'Post'])
-            ->getForm();
+    public function add(
+        Request $req,
+        EntityManagerInterface $em
+    ): Response {
 
+        $post = new MicroPost();
+        $form = $this->createForm(MicroPostType::class, $post);
         $form->handleRequest($req);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $post = $form->getData();
             $post->setCreated(new DateTime());
-
             $em->persist($post);
             $em->flush();
 
@@ -71,17 +69,12 @@ class MicroPostController extends AbstractController
         Request $req,
         EntityManagerInterface $em
     ): Response {
-        $form = $this->createFormBuilder($post)
-            ->add('title')
-            ->add('text')
-            // ->add('submit', SubmitType::class, ['label' => 'Post'])
-            ->getForm();
 
+        $form = $this->createForm(MicroPostType::class, $post);
         $form->handleRequest($req);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $post = $form->getData();
-
             $em->persist($post);
             $em->flush();
 

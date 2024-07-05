@@ -14,9 +14,6 @@ class MicroPostType extends AbstractType
         $builder
             ->add('title')
             ->add('text')
-            ->add('created', null, [
-                'widget' => 'single_text',
-            ])
         ;
     }
 
