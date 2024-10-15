@@ -2,8 +2,13 @@
 
 namespace App\Controller;
 
+use DateTime;
+use App\Entity\Comment;
+use App\Entity\MicroPost;
 use App\Entity\User;
 use App\Entity\UserProfile;
+use App\Repository\CommentRepository;
+use App\Repository\MicroPostRepository;
 use App\Repository\UserProfileRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,14 +24,16 @@ class HelloController extends AbstractController
     ];
 
     #[Route('/', name: 'app_index')]
-    public function index(EntityManagerInterface $em, UserProfileRepository $profiles): Response
+    public function index(EntityManagerInterface $em, UserProfileRepository $profiles, CommentRepository $comments, MicroPostRepository $posts): Response
     {
-        // // add user and profile
+        // // working with one to one relation
+        // // add user
         // $user = new User();
         // $user->setEmail('email@email.com');
         // $user->setPassword('12345678');
-
+        // // add profile
         // $profile = new UserProfile();
+        // // set user for profile and persist to db
         // $profile->setUser($user);
         // $em->persist($profile);
         // $em->flush();
@@ -34,6 +41,27 @@ class HelloController extends AbstractController
         // // remove user and profile
         // $profile = $profiles->find(1);
         // $em->remove($profile);
+        // $em->flush();
+
+        // // working with one to many relation
+        // // fetch a post
+        // $post = $posts->find(12);
+        // // add new comment
+        // $comment = new Comment();
+        // $comment->setText('Hello 2');
+        // // associate the comment with the post
+        // $comment->setPost($post);
+        // // persist the post to db
+        // $em->persist($comment);
+        // $em->flush();
+
+        // // remove a comment
+        // // query the post and the first comment
+        // $post = $posts->find(12);
+        // $comment = $post->getComments()[0];
+        // // remove the comment the persist the post to db
+        // $post->removeComment($comment);
+        // $em->persist($post);
         // $em->flush();
 
         return $this->render(
