@@ -21,6 +21,17 @@ class MicroPostRepository extends ServiceEntityRepository
         parent::__construct($registry, MicroPost::class);
     }
 
+    // this custom method will reduce the query load by querying both posts and commends with only one query
+    public function findAllWithComments(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->addSelect('c')
+            ->leftJoin('p.comments', 'c')
+            ->orderBy('p.created', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return MicroPost[] Returns an array of MicroPost objects
     //     */
