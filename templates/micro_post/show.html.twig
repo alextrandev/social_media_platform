@@ -8,4 +8,32 @@
 
 {% block body %}
   {{ include("micro_post/_post.html.twig", {post: post}) }}
+
+  <div class="mt-4">
+    {% for comment in post.comments %}
+      <div>
+      <div class="flex items-center">
+        {# avatar #}
+        <div class="inline-block bg-gray-200 dark:bg-gray-700 rounded-full text-3xl w-8 h-8 ring-2 ring-white dark:ring-gray-600 mr-2">
+          <img src="https://cdn-icons-png.flaticon.com/512/6858/6858504.png" alt="">{# just place holder avatar #}
+        </div>
+        {# comment infos #}
+        <div>
+          <div class="font-medium text-gray-800 dark:text-gray-300">Author</div>
+          <div class="font-light text-gray-500 dark:text-gray-500">When</div>
+        </div>
+      </div>
+      {# comment text #}
+      <div class="flex">
+        {# decoration line, condition here to hide it for the last comment #}
+        {% if not loop.last %}
+          <div class="border border-gray-300 dark:border-gray-600 ml-4 mr-6 pb-12"></div>
+        {% elseif loop.last %}
+          <div class="border border-transparent ml-4 mr-6 pb-12"></div>
+        {% endif %}
+        <div>{{ comment.text }}</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
 {% endblock %}
