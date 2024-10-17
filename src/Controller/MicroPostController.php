@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class MicroPostController extends AbstractController
 {
@@ -33,10 +34,13 @@ class MicroPostController extends AbstractController
     }
 
     #[Route('micro-post/add', name: 'app_micro_post_add', priority: 2)]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')] // this will deny access before running the function
     public function add(
         Request $req,
         EntityManagerInterface $em
     ): Response {
+        // this will deny the access from this point when ran
+        // $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $post = new MicroPost();
         $form = $this->createForm(MicroPostType::class, $post);
@@ -65,6 +69,7 @@ class MicroPostController extends AbstractController
     }
 
     #[Route('micro-post/{post}/edit', name: 'app_micro_post_edit')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function edit(
         MicroPost $post,
         Request $req,
@@ -96,6 +101,7 @@ class MicroPostController extends AbstractController
     }
 
     #[Route('micro-post/{post}/comment', name: 'app_micro_post_comment')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function addComment(
         MicroPost $post,
         Request $req,
