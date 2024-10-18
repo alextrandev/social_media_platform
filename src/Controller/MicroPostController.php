@@ -35,7 +35,7 @@ class MicroPostController extends AbstractController
     }
 
     #[Route('micro-post/add', name: 'app_micro_post_add', priority: 2)]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')] // this will deny access before running the function
+    #[IsGranted('ROLE_WRITER')] // this will deny access before running the function
     public function add(
         Request $req,
         EntityManagerInterface $em
