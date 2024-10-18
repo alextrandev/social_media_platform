@@ -17,6 +17,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class MicroPostController extends AbstractController
 {
     #[Route('/micro-post', name: 'app_micro_post', priority: 1)]
+    #[IsGranted('PUBLIC_ACCESS')]
     public function index(MicroPostRepository $posts): Response
     {
         return $this->render('micro_post/index.html.twig', [
@@ -25,6 +26,7 @@ class MicroPostController extends AbstractController
     }
 
     #[Route('/micro-post/{post}', name: 'app_micro_post_show')]
+    #[IsGranted('PUBLIC_ACCESS')]
     public function showOne(MicroPost $post): Response
     {
         return $this->render('micro_post/show.html.twig', [
@@ -67,7 +69,7 @@ class MicroPostController extends AbstractController
     }
 
     #[Route('micro-post/{post}/edit', name: 'app_micro_post_edit')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted(MicroPost::EDIT, 'post')]
     public function edit(
         MicroPost $post,
         Request $req,
@@ -99,7 +101,7 @@ class MicroPostController extends AbstractController
     }
 
     #[Route('micro-post/{post}/comment', name: 'app_micro_post_comment')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted('ROLE_COMMENTER')]
     public function addComment(
         MicroPost $post,
         Request $req,
